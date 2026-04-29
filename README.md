@@ -44,9 +44,9 @@ The time evolution for the number density of level $n_{m}$ is governed by the fo
 
 $$
 \begin{aligned}
-\frac{\mathrm{d}n_m}{\mathrm{d}t} = & + n_n \Bigg[ \sum_{n<m} (C_{mn}n_e + K_{mn}n_1) + \sum_{n>m} (F_{mn}n_e + L_{mn}n_1 + \Lambda_{mn}A_{mn}) \Bigg] \\
-& + n_e n_+ (O_m n_e + \Lambda_m R_m + W_m n_1) \\
-& - n_m \Bigg[ \sum_{n>m} (C_{nm}n_e + K_{nm}n_1) + \sum_{n<m} (F_{nm}n_e + L_{nm}n_1 + \Lambda_{nm}A_{nm}) \\
+\frac{\mathrm{d}n_m}{\mathrm{d}t} = & + n_n \Bigg[ \sum_{n < m} (C_{mn}n_e + K_{mn}n_1) + \sum_{n > m} (F_{mn}n_e + L_{mn}n_1 + \Lambda_{mn}A_{mn}) \Bigg] \\
+& + n_e n_{+} (O_m n_e + \Lambda_m R_m + W_m n_1) \\
+& - n_m \Bigg[ \sum_{n > m} (C_{nm}n_e + K_{nm}n_1) + \sum_{n < m} (F_{nm}n_e + L_{nm}n_1 + \Lambda_{nm}A_{nm}) \\
 & \qquad\quad  + S_m n_e + V_m n_1 + \frac{D_m}{\Lambda^2} + n_1^2 B_m \Bigg],
 \end{aligned}
 $$
