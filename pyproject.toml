@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "crm-argon"
+version = "1.0.0"
+authors = [
+  { name="Peter Preisler" },
+]
+description = "Argon Collisional-Radiative (CR) Model Package"
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Physics",
+]
+dependencies = [
+    "numpy",
+    "scipy",
+    "matplotlib",
+    "tomli",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/peterplr/crm-argon"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+cr_model = ["data/*.csv"]

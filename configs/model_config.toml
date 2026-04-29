@@ -1,0 +1,83 @@
+# =========================================================================
+# CR MODEL SETUP
+# =========================================================================
+
+[model]
+maximum_level = 65
+# custom_data_path = "./data" # Uncomment to point to a custom cross-section database
+
+[processes]
+# Global toggles: Set to false to completely disable a physics mechanism.
+# NOTE ON COUPLING:
+# - Disabling excitation ALSO disables the corresponding de-excitation.
+# - Disabling ionization ALSO disables the corresponding 3-body recombination.
+electron_excitation = true
+electron_ionization = true
+atom_excitation = true
+atom_ionization = true
+spontaneous_emission = true
+radiation_trapping = true
+photorecombination = true
+
+# Recombination toggles act as secondary filters.
+# They will ONLY run if the corresponding ionization toggle above is also true.
+three_body_recombination = true
+atom_recombination = true
+
+# Quenching processes are purely global. They do not have level-specific conditions.
+diffusion_quenching = true
+three_body_quenching = true
+
+
+# =========================================================================
+# TRANSITION CONDITIONS
+# =========================================================================
+# Define optional level-specific boundaries (m = lower level, n = upper level).
+# Available parameters: m_min, m_max, n_min, n_max, m_list, n_list.
+# Leaving a block empty (or omitting parameters) means NO restrictions
+# (the process is fully calculated for all active levels).
+
+[transition_conditions.electron_excitation]
+
+  [transition_conditions.electron_excitation.allowed]
+  # Always respect allowed transitions. Leave blank to calculate all.
+
+  [transition_conditions.electron_excitation.parity_forbidden]
+  # Example: Only calculate for m < n <= 47
+  m_max = 46
+  n_max = 47
+
+  [transition_conditions.electron_excitation.spin_forbidden]
+  # Example: Only calculate for m < n <= 47
+  m_max = 46
+  n_max = 47
+
+[transition_conditions.atom_excitation]
+  # Example: Like Vlcek, always calculate atom excitations (and de-excitations)
+  [transition_conditions.atom_excitation.allowed]
+  [transition_conditions.atom_excitation.parity_forbidden]
+  [transition_conditions.atom_excitation.spin_forbidden]
+
+
+# -------------------------------------------------------------------------
+# GENERAL PROCESS CONDITIONS
+# The following processes do not use allowed/forbidden sub-categories.
+# They apply to the level in question (referred to as 'm' or 'lower_level').
+# -------------------------------------------------------------------------
+
+[transition_conditions.electron_ionization.general]
+  # Example: Prevent calculating electron ionization from the ground state
+  # m_min = 2
+
+[transition_conditions.atom_ionization.general]
+  # Example: Only calculate atom impact ionization up to level 50
+  # m_max = 50
+
+[transition_conditions.spontaneous_emission.general]
+  # Example: Only allow emission from specific highly excited states
+  # n_list = [13, 14, 53]
+
+[transition_conditions.photorecombination.general]
+  # Note: Here, 'm' represents the target state the electron recombines into.
+  # Example: Only calculate recombination into the 4s levels
+  # m_list = [2, 3, 4, 5]

@@ -1,0 +1,35 @@
+mode = "simulation"
+
+[execution]
+eedf_mode = "maxwellian"
+output_dir = "./output"
+export_csv = false  # Set too false to disable CSV file generation
+
+[plasma]
+# Supply a list for parameter sweeps, or a single number for one run
+Te_eV = 5.0
+Tg_K = 500
+pg_Pa = [101324.72] # 1 Torr = 133.322 Pa
+R_cm = 1.0
+
+[plasma.density]
+n_e_cm3 = 1e11
+n_ion_cm3 = 1e11
+
+[plotting]
+# Toggle the shaded characteristic energy block backgrounds on the Boltzmann plot
+show_energy_blocks = false
+
+# =========================================================================
+# OPTIONAL EXPERIMENTAL DATA OVERLAY
+# =========================================================================
+# If you want to plot experimental points over your normal simulation runs
+# without running the optimizer, provide them here.
+# Format: "level_id" = density_value
+
+[simulation.experimental_data]
+#"25" = 0.02188
+#"19" = 0.02125
+#"9"  = 0.01387
+#"8"  = 0.02736
+#"7"  = 0.1411

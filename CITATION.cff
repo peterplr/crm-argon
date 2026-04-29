@@ -1,0 +1,24 @@
+cff-version: 1.2.0
+message: "If you use this software or the accompanying report as a reference in your work, please cite it as below."
+authors:
+  - family-names: "Preisler"
+    given-names: "Peter"
+    affiliation: "Kyoto Institute of Technology (KIT) / Justus-Liebig-Universität Gießen (JLU)"
+title: "crm-argon: Argon Collisional-Radiative Model"
+version: 1.0.0
+date-released: "2026-05-01"
+url: "https://github.com/peterplr/crm-argon"
+repository-code: "https://github.com/peterplr/crm-argon"
+license: "GPL-3.0-or-later"
+preferred-citation:
+  type: report
+  authors:
+    - family-names: "Preisler"
+      given-names: "Peter"
+      affiliation: "Kyoto Institute of Technology (KIT) / Justus-Liebig-Universität Gießen (JLU)"
+  title: "Applying a collisional radiative model to an atmospheric argon plasma"
+  institution:
+    name: "Independent Internship Report (KIT / JLU)"
+  year: 2026
+  month: 5
+  url: "https://peterplr.github.io/"
