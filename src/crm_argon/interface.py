@@ -162,8 +162,13 @@ class Interface:
         print("\n=== All Simulations Complete. Processing Outputs ===")
 
         # Plotting
-        plotter = Plotter(database=self.db, output_dir=self.output_dir)
-        show_blocks = self.run_config.get("plotting", {}).get("show_energy_blocks", False)
+        plotting_cfg = self.run_config.get("plotting", {})
+        plotter = Plotter(
+            database=self.db,
+            output_dir=self.output_dir,
+            mplstyle_path=plotting_cfg.get("mplstyle_path")
+        )
+        show_blocks = plotting_cfg.get("show_energy_blocks", False)
         plotter.plot_boltzmann(all_results, exp_data=experimental_data, is_optimization=False,
                                show_blocks=show_blocks)
 
@@ -237,8 +242,13 @@ class Interface:
         opt_results = [{'parameters': optimal_params, 'errors': errors_dict, 'populations': opt_pops}]
 
         # Plotting
-        plotter = Plotter(database=self.db, output_dir=self.output_dir)
-        show_blocks = self.run_config.get("plotting", {}).get("show_energy_blocks", False)
+        plotting_cfg = self.run_config.get("plotting", {})
+        plotter = Plotter(
+            database=self.db,
+            output_dir=self.output_dir,
+            mplstyle_path=plotting_cfg.get("mplstyle_path")
+        )
+        show_blocks = plotting_cfg.get("show_energy_blocks", False)
         plotter.plot_boltzmann(opt_results, exp_data=experimental_data, is_optimization=True, show_blocks=show_blocks)
 
         # Exporting

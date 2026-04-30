@@ -32,4 +32,4 @@ dependencies = [
 where = ["src"]
 
 [tool.setuptools.package-data]
-cr_model = ["data/*.csv"]
+crm_argon = ["data/*.csv"]

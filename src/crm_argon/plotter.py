@@ -32,16 +32,18 @@ class Plotter:
     Handles all data visualization and plotting for the Collisional-Radiative model.
     """
 
-    def __init__(self, database, output_dir):
+    def __init__(self, database, output_dir, mplstyle_path=None):
         """
         Initializes the Plotter with a database reference and an output directory.
 
         Args:
             database (Database): Instance of the Database class for level metadata.
             output_dir (str or Path): Path to the directory where plots will be saved.
+            mplstyle_path (str or Path, optional): Path to a matplotlib style sheet.
         """
         self.db = database
         self.output_dir = output_dir
+        self.mplstyle_path = mplstyle_path
 
         # Parameter formatting dictionary for pretty labels
         self.param_labels = {
@@ -79,11 +81,10 @@ class Plotter:
             show_blocks (bool): If True, adds color-coded blocks for 4s, 4p, etc.
         """
         # Load global style if available
-        style_path = Path(__file__).parent.parent.parent / "configs" / "crm_argon.mplstyle"
-        if style_path.exists():
-            plt.style.use(str(style_path))
+        if self.mplstyle_path and Path(self.mplstyle_path).exists():
+            plt.style.use(self.mplstyle_path)
         else:
-            print("Warning: crm_argon.mplstyle not found. Using default styles.")
+            print("Warning: mplstyle_path not found or not specified. Using default styles.")
 
         print("\nGenerating Boltzmann plot...")
 

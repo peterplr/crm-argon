@@ -19,6 +19,7 @@ n_ion_cm3 = 1e11
 [plotting]
 # Toggle the shaded characteristic energy block backgrounds on the Boltzmann plot
 show_energy_blocks = false
+mplstyle_path = "configs/crm_argon.mplstyle"
 
 # =========================================================================
 # OPTIONAL EXPERIMENTAL DATA OVERLAY
