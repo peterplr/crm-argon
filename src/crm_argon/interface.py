@@ -268,7 +268,7 @@ class Interface:
             )
 
     # =========================================================================
-    # CORE METHODS (Kept mostly intact for manual usage)
+    # CORE METHODS
     # =========================================================================
 
     def run(self, Te_eV, Tg_K, n_e_cm3, n_1_cm3, n_ion_cm3, R_cm, analyze_levels=None):
@@ -336,7 +336,8 @@ class Interface:
             x0 = np.array([Te_guess], dtype=np.float64)
             limit_bounds = Bounds([Te_bounds[0]], [Te_bounds[1]])
 
-        # Pre-process experimental data for faster evaluation
+        # Pre-process experimental data for fast evaluation
+        # Pre-process experimental data
         exp_log_pops = {}
         weights = {}
 
@@ -345,7 +346,12 @@ class Interface:
             weights[lvl] = data.get('weight', 1.0)
 
         levels = list(experimental_data.keys())
-        pairs = list(combinations(levels, 2))
+
+        target_data = []
+        for num_lvl, den_lvl in combinations(levels, 2):
+            exp_log_ratio = exp_log_pops[num_lvl] - exp_log_pops[den_lvl]
+            pair_weight = weights[num_lvl] * weights[den_lvl]
+            target_data.append((num_lvl, den_lvl, exp_log_ratio, pair_weight))
 
         def cost_function(x_array: np.ndarray) -> float:
             """Evaluates the difference between experimental and simulated population ratios."""
@@ -359,15 +365,18 @@ class Interface:
             )
 
             total_error = 0.0
-            for num_lvl, den_lvl in pairs:
+
+            # Unpack the pre-calculated values directly in the loop signature
+            for num_lvl, den_lvl, exp_log_ratio, pair_weight in target_data:
+                # Safely get populations
                 sim_num = max(populations.get(num_lvl, 1e-99), 1e-99)
                 sim_den = max(populations.get(den_lvl, 1e-99), 1e-99)
 
-                exp_log_ratio = exp_log_pops[num_lvl] - exp_log_pops[den_lvl]
+                # Calculate simulated ratio
+                # PERFORMANCE TIP: math.log is faster than np.log for single floats
                 sim_log_ratio = np.log(sim_num) - np.log(sim_den)
 
-                # Weight is the product of individual level weights
-                pair_weight = weights[num_lvl] * weights[den_lvl]
+                # Compute weighted squared error
                 total_error += pair_weight * (exp_log_ratio - sim_log_ratio) ** 2
 
             return total_error

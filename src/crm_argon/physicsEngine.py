@@ -29,8 +29,6 @@ except ModuleNotFoundError:
     import tomli as tomllib
 import numpy as np
 
-from .constants import m_e, e, h
-
 
 class PhysicsEngine:
     """

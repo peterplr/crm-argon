@@ -9,7 +9,7 @@ export_csv = false  # Set too false to disable CSV file generation
 # Supply a list for parameter sweeps, or a single number for one run
 Te_eV = 5.0
 Tg_K = 500
-pg_Pa = [101324.72] # 1 Torr = 133.322 Pa
+pg_Pa = [13.3222,133.322,1333.22,101325] # 1 Torr = 133.322 Pa
 R_cm = 1.0
 
 [plasma.density]

@@ -1,4 +1,4 @@
-# crm-argon: Argon Collisional-Radiative Model
+# crm-argon: Collisional-Radiative Model for Argon
 
 **crm-argon** is a comprehensive Python package for modeling argon plasma kinetics using a Collisional-Radiative Model (CRM) approach. 
 
@@ -8,13 +8,19 @@ The primary objective of this package is to serve as a diagnostic tool for exper
 
 You can run the model directly from the command line using the built-in package execution. All physics parameters, modes, and plotting options are controlled via TOML files.
 
-**1. Run a Standard Simulation Sweep**
+**1. Install the Package**
+Make sure you are inside the crm-argon folder before you run this command:
+```bash
+pip install -e .
+```
+
+**2. Run a Standard Simulation Sweep**
 To run forward calculations (predicting state populations based on given plasma parameters):
 ```bash
 python -m crm_argon --model configs/model_config.toml --run configs/run_simulation.toml
 ```
 
-**2. Run a Parameter Optimization**
+**3. Run a Parameter Optimization**
 To fit plasma parameters ($T_e$ or $n_e$) to your experimental data:
 ```bash
 python -m crm_argon --model configs/model_config.toml --run configs/run_optimization.toml
