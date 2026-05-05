@@ -24,10 +24,15 @@
 import argparse
 from .interface import Interface
 
-parser = argparse.ArgumentParser()
-parser.add_argument("--model", required=True, help="Path to model config")
-parser.add_argument("--run", required=True, help="Path to run config")
-args = parser.parse_args()
+def main():
 
-model = Interface(args.model, args.run)
-model.execute()
+    parser = argparse.ArgumentParser(description="Run Collisional Radiative Model for Argon")
+    parser.add_argument("--model", required=True, help="Path to model config")
+    parser.add_argument("--run", required=True, help="Path to run config")
+    args = parser.parse_args()
+
+    model = Interface(args.model, args.run)
+    model.execute()
+
+if __name__ == "__main__":
+    main()

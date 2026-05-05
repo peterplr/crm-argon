@@ -11,9 +11,10 @@ authors = [
 description = "Argon Collisional-Radiative (CR) Model Package"
 readme = "README.md"
 requires-python = ">=3.7"
+license = {file = "LICENSE"}
 classifiers = [
     "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: MIT License",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
     "Operating System :: OS Independent",
     "Intended Audience :: Science/Research",
     "Topic :: Scientific/Engineering :: Physics",
@@ -27,6 +28,9 @@ dependencies = [
 
 [project.urls]
 "Homepage" = "https://github.com/peterplr/crm-argon"
+
+[project.scripts]
+crm-argon = "crm_argon.main:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
