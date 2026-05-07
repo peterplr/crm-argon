@@ -7,14 +7,14 @@ export_csv = false  # Set too false to disable CSV file generation
 
 [plasma]
 # These act as the initial GUESSES for the optimizer
-Te_eV = 2
+Te_eV = 1
 Tg_K = 450
 pg_Pa = 1e5
 R_cm = 0.05
 
 [plasma.density]
-n_e_cm3 = 5e11
-n_ion_cm3 = 5e11
+n_e_cm3 = 1e11
+n_ion_cm3 = 1e11
 
 [plotting]
 # Toggle the shaded characteristic energy block backgrounds on the Boltzmann plot
@@ -29,31 +29,3 @@ ne_bounds = [1e10, 1e13]
 
 [optimization.experimental_data]
 # Format: "level_id" = { density = value, weight = value }
-
-# 6V
-"7" = { density = 0.03292, weight = 1 }
-"8" = { density = 0.002715, weight = 1 }
-"9" = { density = 0.006324, weight = 1 }
-"10" = { density = 0.0004987, weight = 1 }
-"11" = { density = 0.001744, weight = 1 }
-
-# 5V
-#"7" = { density = 0.02280, weight = 1 }
-#"8" = { density = 0.001831, weight = 1 }
-#"9" = { density = 0.004412, weight = 1 }
-#"10" = { density = 0.0003456, weight = 1 }
-#"11" = { density = 0.001236, weight = 1 }
-
-# 4.5V
-#"7" = { density = 0.01621, weight = 1 }
-#"8" = { density = 0.001275, weight = 1 }
-#"9" = { density = 0.003197, weight = 1 }
-#"10" = { density = 0.0002414, weight = 1 }
-#"11" = { density = 0.0008682, weight = 1 }
-
-# 4V
-#"7" = { density = 0.007830, weight = 1 }
-#"8" = { density = 0.0006222, weight = 1 }
-#"9" = { density = 0.001548, weight = 1 }
-#"10" = { density = 0.0001173, weight = 1 }
-#"11" = { density = 0.0004243, weight = 1 }
