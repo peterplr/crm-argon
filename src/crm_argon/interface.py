@@ -130,7 +130,8 @@ class Interface:
         keys, values = zip(*params.items())
         run_matrix = [dict(zip(keys, v)) for v in itertools.product(*values)]
 
-        analyze_levels = self.model_config.get("levels", {}).get("analyze")
+        # Fetch from run_config instead of model_config
+        analyze_levels = self.run_config.get("diagnostics", {}).get("analyze_levels", [])
 
         # Store combined results for plotter
         all_results = []
@@ -199,6 +200,9 @@ class Interface:
 
         n_1_cm3 = (pg_Pa / (k_B * Tg_K)) * 1e-6
 
+        # Fetch from run_config instead of model_config
+        analyze_optimal_levels = self.run_config.get("diagnostics", {}).get("analyze_levels", [])
+
         # Run optimizer
         best_Te, best_ne, errors, opt_pops = self.find_plasma_parameters(
             experimental_data=experimental_data,
@@ -211,7 +215,7 @@ class Interface:
             optimize_ne=opt_cfg.get("optimize_ne", False),
             Te_bounds=tuple(opt_cfg.get("Te_bounds", [0.1, 10.0])),
             ne_bounds=tuple(opt_cfg.get("ne_bounds", [1e10, 1e16])),
-            analyze_optimal_levels=self.model_config.get("levels", {}).get("analyze")
+            analyze_optimal_levels=analyze_optimal_levels
         )
 
         # Pack optimized parameters for plotter
@@ -288,8 +292,12 @@ class Interface:
                 engine=self.physics, populations=populations, Te_eV=Te_eV, Tg_K=Tg_K,
                 n_e=n_e_cm3, n_1=n_1_cm3, R_cm=R_cm, eedf_func=eedf
             )
+            exporter = Exporter(database=self.db, output_dir=self.output_dir)
             for lvl in analyze_levels:
                 debugger.print_report(p=lvl)
+                report_str = debugger.generate_report_string(p=lvl)
+                exporter.export_diagnostics(report_str, lvl)
+
         return populations
 
     # =========================================================================

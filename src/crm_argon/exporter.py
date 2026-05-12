@@ -200,3 +200,13 @@ class Exporter:
             self._write_population_data(f, optimal_pops)
 
         print(f"Saved optimization results to: {filepath}")
+
+    def export_diagnostics(self, report_str: str, level: int):
+        """
+        Exports the flux analyzer diagnostics to a text file.
+        """
+        timestamp = self._get_timestamp()
+        filepath = self.output_dir / f"{timestamp}_diagnostics_lvl_{level}.txt"
+        with open(filepath, "w", encoding="utf-8") as f:
+            f.write(report_str)
+        print(f"Saved diagnostics for level {level} to: {filepath}")

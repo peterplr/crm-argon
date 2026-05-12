@@ -28,3 +28,5 @@ data_preparation/outdated
 # OS specific
 .DS_Store
 Thumbs.db
+# Comparison studies
+local_plots/

@@ -111,8 +111,9 @@ class FluxAnalyzer:
                 report['depopulation_freq']['up']['a'] += self.n_1 * K_pi
 
                 # Downward transitions from i to p (Population)
-                A_pi, lam_pi = self.engine._calc_radiative_rates(p, i, self.n_1, self.R_cm, self.Tg_K)
-                report['population_rate']['from_up']['rad'] += pop_i * lam_pi * A_pi
+                # i is upper, p is lower, so call with (upper, lower) -> (i, p)
+                A_ip, lam_ip = self.engine._calc_radiative_rates(i, p, self.n_1, self.R_cm, self.Tg_K)
+                report['population_rate']['from_up']['rad'] += pop_i * lam_ip * A_ip
                 report['population_rate']['from_up']['e'] += pop_i * self.n_e * F_ip
                 report['population_rate']['from_up']['a'] += pop_i * self.n_1 * L_ip
             else:
@@ -121,8 +122,9 @@ class FluxAnalyzer:
                 K_ip, L_pi = self.engine._calc_atom_excitation(i, p, self.Tg_K)
 
                 # Downward transitions from p (Depopulation)
-                A_ip, lam_ip = self.engine._calc_radiative_rates(i, p, self.n_1, self.R_cm, self.Tg_K)
-                report['depopulation_freq']['down']['rad'] += lam_ip * A_ip
+                # p is upper, i is lower, so call with (upper, lower) -> (p, i)
+                A_pi, lam_pi = self.engine._calc_radiative_rates(p, i, self.n_1, self.R_cm, self.Tg_K)
+                report['depopulation_freq']['down']['rad'] += lam_pi * A_pi
                 report['depopulation_freq']['down']['e'] += self.n_e * F_pi
                 report['depopulation_freq']['down']['a'] += self.n_1 * L_pi
 
@@ -155,44 +157,53 @@ class FluxAnalyzer:
 
         return report
 
+    def generate_report_string(self, p, total_levels=65):
+        """
+        Generates and returns a formatted diagnostic report for a specific level as a string.
+        """
+        data = self.analyze_level(p, total_levels)
+        
+        lines = []
+        lines.append(f"\n{'=' * 60}")
+        lines.append(f" FLUX DIAGNOSTICS FOR LEVEL: {p}")
+        lines.append(f" (Te = {self.Te_eV} eV, ne = {self.n_e:.1E} cm^-3, ng = {self.n_1:.1E} cm^-3)")
+        lines.append(f"{'=' * 60}")
+
+        lines.append("\n[ INTERNAL LADDER: DEPOPULATION FREQUENCIES (s^-1) ]")
+        lines.append("  UPWARD (To E_i > E_p):")
+        lines.append(f"    Electron Excitation: {data['depopulation_freq']['up']['e']:.2E}")
+        lines.append(f"    Atom Excitation:     {data['depopulation_freq']['up']['a']:.2E}")
+
+        lines.append("\n  DOWNWARD (To E_i < E_p):")
+        lines.append(f"    Spontaneous Em.:     {data['depopulation_freq']['down']['rad']:.2E}")
+        lines.append(f"    Electron De-Exc.:    {data['depopulation_freq']['down']['e']:.2E}")
+        lines.append(f"    Atom De-Exc.:        {data['depopulation_freq']['down']['a']:.2E}")
+
+        lines.append("\n[ INTERNAL LADDER: POPULATION RATES (cm^-3 s^-1) ]")
+        lines.append("  FROM UPPER (Cascading Down):")
+        lines.append(f"    Spontaneous Em.:     {data['population_rate']['from_up']['rad']:.2E}")
+        lines.append(f"    Electron De-Exc.:    {data['population_rate']['from_up']['e']:.2E}")
+        lines.append(f"    Atom De-Exc.:        {data['population_rate']['from_up']['a']:.2E}")
+
+        lines.append("\n  FROM LOWER (Pumping Up):")
+        lines.append(f"    Electron Excitation: {data['population_rate']['from_down']['e']:.2E}")
+        lines.append(f"    Atom Excitation:     {data['population_rate']['from_down']['a']:.2E}")
+
+        lines.append("\n[ CONTINUUM INTERACTIONS (Ionization / Recomb) ]")
+        lines.append("  DEPOPULATION TO CONTINUUM (Freq: s^-1):")
+        lines.append(f"    Electron Ionization: {data['continuum']['depopulation_freq']['e']:.2E}")
+        lines.append(f"    Atom Ionization:     {data['continuum']['depopulation_freq']['a']:.2E}")
+
+        lines.append("\n  POPULATION FROM CONTINUUM (Rate: cm^-3 s^-1):")
+        lines.append(f"    3-Body Electron Rec: {data['continuum']['population_rate']['e']:.2E}")
+        lines.append(f"    3-Body Atom Rec:     {data['continuum']['population_rate']['a']:.2E}")
+        lines.append(f"    Radiative Recomb:    {data['continuum']['population_rate']['rad']:.2E}")
+        lines.append(f"{'=' * 60}\n")
+        
+        return "\n".join(lines)
+
     def print_report(self, p, total_levels=65):
         """
         Generates and prints a formatted diagnostic report for a specific level.
         """
-        data = self.analyze_level(p, total_levels)
-
-        print(f"\n{'=' * 60}")
-        print(f" FLUX DIAGNOSTICS FOR LEVEL: {p}")
-        print(f" (Te = {self.Te_eV} eV, ne = {self.n_e:.1E} cm^-3, ng = {self.n_1:.1E} cm^-3)")
-        print(f"{'=' * 60}")
-
-        print("\n[ INTERNAL LADDER: DEPOPULATION FREQUENCIES (s^-1) ]")
-        print("  UPWARD (To E_i > E_p):")
-        print(f"    Electron Excitation: {data['depopulation_freq']['up']['e']:.2E}")
-        print(f"    Atom Excitation:     {data['depopulation_freq']['up']['a']:.2E}")
-
-        print("\n  DOWNWARD (To E_i < E_p):")
-        print(f"    Spontaneous Em.:     {data['depopulation_freq']['down']['rad']:.2E}")
-        print(f"    Electron De-Exc.:    {data['depopulation_freq']['down']['e']:.2E}")
-        print(f"    Atom De-Exc.:        {data['depopulation_freq']['down']['a']:.2E}")
-
-        print("\n[ INTERNAL LADDER: POPULATION RATES (cm^-3 s^-1) ]")
-        print("  FROM UPPER (Cascading Down):")
-        print(f"    Spontaneous Em.:     {data['population_rate']['from_up']['rad']:.2E}")
-        print(f"    Electron De-Exc.:    {data['population_rate']['from_up']['e']:.2E}")
-        print(f"    Atom De-Exc.:        {data['population_rate']['from_up']['a']:.2E}")
-
-        print("\n  FROM LOWER (Pumping Up):")
-        print(f"    Electron Excitation: {data['population_rate']['from_down']['e']:.2E}")
-        print(f"    Atom Excitation:     {data['population_rate']['from_down']['a']:.2E}")
-
-        print("\n[ CONTINUUM INTERACTIONS (Ionization / Recomb) ]")
-        print("  DEPOPULATION TO CONTINUUM (Freq: s^-1):")
-        print(f"    Electron Ionization: {data['continuum']['depopulation_freq']['e']:.2E}")
-        print(f"    Atom Ionization:     {data['continuum']['depopulation_freq']['a']:.2E}")
-
-        print("\n  POPULATION FROM CONTINUUM (Rate: cm^-3 s^-1):")
-        print(f"    3-Body Electron Rec: {data['continuum']['population_rate']['e']:.2E}")
-        print(f"    3-Body Atom Rec:     {data['continuum']['population_rate']['a']:.2E}")
-        print(f"    Radiative Recomb:    {data['continuum']['population_rate']['rad']:.2E}")
-        print(f"{'=' * 60}\n")
+        print(self.generate_report_string(p, total_levels))

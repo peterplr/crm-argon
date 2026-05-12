@@ -7,10 +7,10 @@ export_csv = false  # Set too false to disable CSV file generation
 
 [plasma]
 # Supply a list for parameter sweeps, or a single number for one run
-Te_eV = 5.0
+Te_eV = 5
 Tg_K = 500
-pg_Pa = [13.3222,133.322,1333.22,101325] # 1 Torr = 133.322 Pa
-R_cm = 1.0
+pg_Pa = 101325 # 1 Torr = 133.322 Pa
+R_cm = 1
 
 [plasma.density]
 n_e_cm3 = 1e11
@@ -18,8 +18,13 @@ n_ion_cm3 = 1e11
 
 [plotting]
 # Toggle the shaded characteristic energy block backgrounds on the Boltzmann plot
-show_energy_blocks = false
+show_energy_blocks = true
 mplstyle_path = "configs/crm_argon.mplstyle"
+
+[diagnostics]
+# Analyze fluxes (population/depopulation rates) for specific levels.
+# List the level IDs to analyze. Example: analyze_levels = [2, 3, 4]
+analyze_levels = [6,13,53]
 
 # =========================================================================
 # OPTIONAL EXPERIMENTAL DATA OVERLAY
